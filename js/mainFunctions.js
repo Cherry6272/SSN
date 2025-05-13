@@ -242,10 +242,7 @@ $(function () {
     });
 })
 
-// Locations
-$(function () {
-    $(".card").on('click', () => {window.location.href = "https://www.instagram.com/"});
-})
+
 // Location socials
 $(function () {
     $('.facebook').on('click', function(event) {
@@ -254,6 +251,6 @@ $(function () {
     });
     $('.instagram').on('click', function(event) {
       event.preventDefault();
-      window.location.href = "https://www.instagram.com/";
+      window.location.href = "https://www.instagram.com/southside__nirvana";
     });
 })
