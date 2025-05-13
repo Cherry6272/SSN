@@ -1,46 +1,45 @@
-		<?php
-				$nom = strip_tags($_POST['nom']);
-				$telephone = strip_tags($_POST['telephone']);
-				$mail = strip_tags($_POST['mail']);
-				$message = strip_tags($_POST['message']);
-				$checkRobot = strip_tags($_POST['checkRobot']);
-				$newsletter = strip_tags($_POST['newsletter']);
+<?php
+$nom = htmlspecialchars(strip_tags($_POST['nom']));
+$telephone = htmlspecialchars(strip_tags($_POST['telephone']));
+$mail = htmlspecialchars(strip_tags($_POST['mail']));
+$message = htmlspecialchars(strip_tags($_POST['message']));
 
-				
-				$texte = "Hi there,<br /><br />";
-				$texte = $texte . "Message from < South Side Nirvana >.<br />";
-				$texte = $texte . "The elements entered in the form are as follows :<br />";
-				$texte = $texte . "Name : $nom<br />";
-				$texte = $texte . "Phone number : $telephone<br />";
-				$texte = $texte . "Email :  $mail<br /><br />";
-				$texte = $texte . "Message : $message<br /><br />";
-				$texte = $texte . "Newsletter subscription : $newsletter<br /><br />";
-				$texte = $texte . "This is an automatic message, do not reply to it.";
+// Validate email
+if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+  echo "<p class=\"hardLight\">Invalid email address.</p>";
+  exit;
+}
 
-				$texte = stripslashes($texte);
+// Build message
+$texte = "Hi there,<br /><br />";
+$texte .= "Message from &lt;South Side Nirvana&gt;.<br />";
+$texte .= "The elements entered in the form are as follows:<br />";
+$texte .= "Name: $nom<br />";
+$texte .= "Phone number: $telephone<br />";
+$texte .= "Email: $mail<br /><br />";
+$texte .= "Message: $message<br /><br />";
+$texte .= "This is an automatic message, do not reply to it.";
 
-				// Recipient and subject of the message
-				$destinataire = "u"; // input your email here
-				$objet = "Message from your < site name >"; // input your domain name here
+$texte = stripslashes($texte);
 
-				// Headers
-	      $headers = array(
-	                      'Content-type' => 'text/html',
-	                      'From' => 'form@yourbandname.com', // input your email from here
-	                      'X-Mailer' => 'PHP/' . phpversion()
-	                  );
+// Email details
+$destinataire = "cheran6272cherry@gmail.com";
+$objet = "Message from your South Side Nirvana website";
 
-				// Send the message then return data to current page with ajax
-				if ($checkRobot == 7) {
-					$conf = ini_set('mail', 'mail.gmail.com'); // update yours informations here
-					$sending_ok = mail($destinataire, $objet, $texte, $headers);
-					if ($sending_ok) {
-							echo "<p class=\"hardLight\">Thanks for your message !<br /><br />We will get back to you very soon.</p>";
-						}
-					else {
-							echo "<p class=\"hardLight\">There seems to be a problem ...</p>";
-						}
+// Email headers
+$headers = "MIME-Version: 1.0" . "\r\n";
+$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+$headers .= "From: South Side Nirvana <form@yourbandname.com>" . "\r\n";
 
-				} else {
-					echo "<p class=\"hardLight\">There seems to be a problem with the anti robot control ...</p>";
-				}
+// Send email
+if ($checkRobot == 7) {
+    $sending_ok = mail($destinataire, $objet, $texte, $headers);
+    if ($sending_ok) {
+        echo "<p class=\"hardLight\">Thanks for your message!<br /><br />We will get back to you very soon.</p>";
+    } else {
+        echo "<p class=\"hardLight\">There seems to be a problem sending the message...</p>";
+    }
+} else {
+    echo "<p class=\"hardLight\">There seems to be a problem with the anti-robot control...</p>";
+}
+?>

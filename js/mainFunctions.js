@@ -79,19 +79,17 @@ $(function () {
         }
       })
       // Phone
-        $('#telephone').on('blur input', function () {
-            let regexTelephone = /[0]{1}[1-7]{1}[0-9]{8}/;
-            let telEntry = String(document.getElementById('telephone').value);
-            for (var i = 0; i < telEntry.length; i++) {
-              telEntry = telEntry.replace(" ", "");
-            }
-            if (!telEntry.match(regexTelephone)) {
-                $('#helpTel').text('Incorrect phone number').hide().show();
-            } else {
-                $('#helpTel').slideUp(400);
-            }
-        })
-
+      $('#telephone').on('blur input', function () {
+        let regexTelephone = /^0?[6-9]\d{9}$/;
+        let telEntry = $('#telephone').val().replace(/\s+/g, ''); // remove all spaces
+    
+        if (!regexTelephone.test(telEntry)) {
+            $('#helpTel').text('Incorrect phone number').hide().show();
+        } else {
+            $('#helpTel').slideUp(400);
+        } 
+    });
+    
     // Email
         $('#mail').on('blur input', function () {
           let regexMail = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/;
@@ -103,14 +101,8 @@ $(function () {
           }
         })
 
-    // Check Robot
-        $('#checkRobot').on('blur input', function () {
-            if ($('#checkRobot').val() != 7) {
-              $('#helpRobot').text('Incorrect result of the operation').hide().show();
-            } else {
-              $('#helpRobot').slideUp(400);
-            }
-        })
+
+       
     // Message
         $('#message').on('blur input', function () {
           if ($('#message').val().length >= 3000) {
@@ -124,104 +116,44 @@ $(function () {
 
 // Contact form
 $(function () {
-      $('.contactForm').on('submit', function (e) {
-          e.preventDefault();
-          let nom = $('#nom').val();
-          let telephone = $('#telephone').val();
-          let mail = $('#mail').val();
-          let message = $('#message').val();
-          let newsletter = $('input[name="newsletter"]:checked').val();
-          let checkRobot = $('#checkRobot').val();
-          if ($('#checkRobot').val() == 7) {
-              $.post('../datas/sendFormContact.php',
-                      {nom: nom,
-                        telephone: telephone,
-                        mail: mail,
-                        message: message,
-                        newsletter: newsletter,
-                        checkRobot: checkRobot },
-                        function(data, textStatus, xhr) {
-                            $('form').fadeOut(400, function() {
-                                $('#retourFormulaire').css({"padding": "10px",
-                                                            "margin-top": "160px",
-                                                            "margin-bottom": "160px",
-                                                            "margin-left": "auto",
-                                                            "margin-right": "auto",
-                                                            "color": "white",
-                                                            "font-size": "1rem",
-                                                            "text-align": "center"});
-                                $('#retourFormulaire').html(data);
-                            });
-                            $('#nom').val('');
-                            $('#telephone').val('');
-                            $('#mail').val('');
-                            $('#message').val('');
-                            $('#checkRobot').val('');
-                          });
-            } else {
-                alert('Incorrect anti robot check result !');
-            }
+  $('.contactForm').on('submit', function (e) {
+      e.preventDefault();
 
-      })
-})
+      let nom = $('#nom').val();
+      let telephone = $('#telephone').val();
+      let mail = $('#mail').val();
+      let message = $('#message').val();
 
-// Form newsletter input blur
-$(function () {
-  let regexMail = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/;
-    $('#emailNews').on('blur input', function(event) {
-        //event.preventDefault();
-        let mailEntry = $('#emailNews').val();
-        if (!mailEntry.match(regexMail)) {
-          $('#helpMailNews').text('Incorrect email address').hide().show();
-          $('#hideNews').hide();
-        } else {
-          $('#helpMailNews').slideUp(100, function () {
-            // Apparition checkRobotNews
-            $('#hideNews').fadeIn();
+      $.post('../datas/sendFormContact.php', {
+          nom: nom,
+          telephone: telephone,
+          mail: mail,
+          message: message,
+      },
+      function(data) {
+          $('form').fadeOut(400, function () {
+              $('#retourFormulaire').css({
+                  "padding": "10px",
+                  "margin-top": "160px",
+                  "margin-bottom": "160px",
+                  "margin-left": "auto",
+                  "margin-right": "auto",
+                  "color": "white",
+                  "font-size": "1rem",
+                  "text-align": "center"
+              });
+              $('#retourFormulaire').html(data);
           });
-        }
-    });
-    $('#checkRobotNews').on('blur input', function(event) {
-        if ($('#checkRobotNews').val() != 7) {
-          $('#helpMailNews').text('Incorrect result').hide().show();
-        } else {
-          $('#helpMailNews').slideUp(100, function () {
-          });
-        }
-    });
-})
 
-// Form newsletter ajax send
-$(function () {
-      $('.newsletterForm').on('submit', function (e) {
-          e.preventDefault();
-          let mail = $('#emailNews').val();
-          let checkRobot = $('#checkRobotNews').val();
-          if ($('#checkRobotNews').val() == 7 ) {
-              $.post('../datas/sendFormSubscription.php',
-                      { mail: mail,
-                        checkRobot: checkRobot },
-                        function(data, textStatus, xhr) {
-                            $('.newsletterForm').fadeOut(400, function() {
-                                $('#retourNewsFormulaire').css({"padding": "10px",
-                                                            "margin-top": "60px",
-                                                            "margin-bottom": "60px",
-                                                            "margin-left": "auto",
-                                                            "margin-right": "auto",
-                                                            "color": "white",
-                                                            "font-size": "1rem",
-                                                            "text-align": "center"});
-                                $('#retourNewsFormulaire').html(data);
-                            });
-                            $('#emailNews').val('');
-                            $('#checkRobotNews').val('');
-                          });
-            } else {
-                alert('Incorrect anti robot check result !');
-            }
+          // Clear fields
+          $('#nom').val('');
+          $('#telephone').val('');
+          $('#mail').val('');
+          $('#message').val('');
+      });
+  });
+});
 
-      })
-})
 
 // Animations on scroll
 $(function () {
@@ -273,7 +205,7 @@ $(function () {
 })
 
 // Manage scroll up button
-$(function () {
+$(function () { 
     let ecran = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
       $(window).on('scroll', function () {
         let scrollNow = $(window).scrollTop();
