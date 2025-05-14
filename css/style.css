@@ -511,7 +511,7 @@ form.newsletterForm input[type=submit]:hover {
   justify-content: center;
   align-items: center;
 }
-.contactForm input, .contactForm textarea {
+.contactForm input, .contactForm textarea ,.contactForm button{
   color: #1A1B1D;
   padding: 15px;
   width: 70%;
@@ -534,7 +534,7 @@ form.newsletterForm input[type=submit]:hover {
 .contactForm textarea {
   border-radius: 5px;
 }
-.contactForm input[type=submit] {
+.contactForm button[type=submit] {
   text-transform: uppercase;
   letter-spacing: 0.2rem;
   font-size: 2vh;
@@ -542,7 +542,7 @@ form.newsletterForm input[type=submit]:hover {
   transition: all ease-in-out 250ms;
   background-color: white;
 }
-.contactForm input[type=submit]:hover {
+.contactForm button[type=submit]:hover {
   transform: scaleX(0.8);
   letter-spacing: 0.8rem;
   transition: all ease-in-out 250ms;
@@ -757,7 +757,7 @@ button[name=backSite] {
     max-width: 100%;
   }
 
-  .contactForm input, .contactForm textarea {
+  .contactForm input, .contactForm textarea .contactForm button{
     width: 90%;
   }
 
@@ -777,7 +777,7 @@ button[name=backSite] {
     transform: none;
   }
 
-  .contactForm input[type=submit]:hover {
+  .contactForm button[type=submit]:hover {
     transform: none;
     letter-spacing: 0.2rem;
     color: #1A1B1D;
