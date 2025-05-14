@@ -124,26 +124,7 @@ $(function () {
       let mail = $('#mail').val();
       let message = $('#message').val();
 
-      $.post('../datas/sendFormContact.php', {
-          nom: nom,
-          telephone: telephone,
-          mail: mail,
-          message: message,
-      },
-      function(data) {
-          $('form').fadeOut(400, function () {
-              $('#retourFormulaire').css({
-                  "padding": "10px",
-                  "margin-top": "160px",
-                  "margin-bottom": "160px",
-                  "margin-left": "auto",
-                  "margin-right": "auto",
-                  "color": "white",
-                  "font-size": "1rem",
-                  "text-align": "center"
-              });
-              $('#retourFormulaire').html(data);
-          });
+      
 
           // Clear fields
           $('#nom').val('');
@@ -152,7 +133,7 @@ $(function () {
           $('#message').val('');
       });
   });
-});
+
 
 
 // Animations on scroll
